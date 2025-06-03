@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.includeLanguages": {
+    "Svelte": "html"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  }
+}

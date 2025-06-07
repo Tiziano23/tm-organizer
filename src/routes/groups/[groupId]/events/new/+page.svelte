@@ -35,5 +35,9 @@
   </div>
   <input type="submit" value="Submit" class="btn btn-primary" />
   <input type="hidden" name="uid" value={user.uid} />
-  <button onclick={() => goto(`/groups/${data.params.groupId}/`)} type="button" class="btn btn-secondary">Back</button>
+  <button
+    onclick={() => goto(`/groups/${data.groupId}/`)}
+    type="button"
+    class="btn btn-secondary">Back</button
+  >
 </form>

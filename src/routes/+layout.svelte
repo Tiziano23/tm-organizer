@@ -42,13 +42,23 @@
         </details>
       </div>
     {:else}
-      <button class="cursor-pointer hover:underline" onclick={loginWithGoogle}>Log in</button>
+      <button class="cursor-pointer hover:underline" onclick={loginWithGoogle}
+        >Log in</button
+      >
     {/if}
   </div>
 </nav>
 
 <div class="mx-4">
-  {@render children()}
+  {#if user.uid}
+    {@render children()}
+  {:else}
+    <div class="text-center mt-20">
+      <h1 class="text-5xl mb-6 font-bold">Activity Organizer</h1>
+      <h2 class="text-sm text-slate-800">by Tiziano Marzocchella</h2>
+      <h3 class="text-xl mt-12">Please login.</h3>
+    </div>
+  {/if}
 </div>
 
 {#if toast.active}

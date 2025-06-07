@@ -3,6 +3,7 @@
   import { toastNotification } from "./Toast.svelte";
   import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
   import { firestore } from "$lib/firebase";
+  import { redirect } from "@sveltejs/kit";
 
   let props: App.Activity = $props();
 
@@ -46,14 +47,22 @@
       {props.title}
     </p>
     <div>
+      <button>
+        Add poll
+      </button>
       {#if user.uid}
         {#if !props.subscribers.includes(user.uid)}
-          <button class="btn btn-primary" onclick={subscribe}>Subscribe</button>
+          {#if !props.participants || props.subscribers.length < props.participants.max}
+            <button class="btn btn-primary" onclick={subscribe}
+              >Subscribe</button
+            >
+          {/if}
         {:else}
-          <button class="btn btn-primary" onclick={unsubscribe}>Unsubscribe</button>
+          <button class="btn btn-primary" onclick={unsubscribe}
+            >Unsubscribe</button
+          >
         {/if}
       {/if}
-
       <button
         onclick={share}
         class="px-4 py-2 bg-cyan-50 underline rounded-md cursor-pointer"
@@ -74,7 +83,10 @@
   {#if props.subscribers && props.subscribers.length > 0}
     <p>
       <span class="font-semibold">Subscribers:</span>
-      {props.subscribers.length}
+      {props.subscribers.length} {props.participants ? "/ " + props.participants.max : ""}
+      {#if props.subscribers.length >= (props.participants?.min || 0)}
+        <span class="fa fa-check text-green-500"></span>
+      {/if}
     </p>
   {/if}
 </div>

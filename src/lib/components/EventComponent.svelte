@@ -47,9 +47,6 @@
       {props.title}
     </p>
     <div>
-      <button>
-        Add poll
-      </button>
       {#if user.uid}
         {#if !props.subscribers.includes(user.uid)}
           {#if !props.participants || props.subscribers.length < props.participants.max}

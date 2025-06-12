@@ -1,51 +1,28 @@
-import { onDestroy } from "svelte";
-
+import { readable } from "svelte/store";
 import {
-  onIdTokenChanged,
+  onAuthStateChanged,
   signInWithPopup,
   signOut,
   type User,
+  GoogleAuthProvider,
 } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth";
 
-import { sharedState, stateClosure } from "./state.svelte";
-import { auth, firestore } from "./firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { auth } from "./firebase";
 
 export const loginWithGoogle = async () => {
-  let provider = new GoogleAuthProvider();
+  const provider = new GoogleAuthProvider();
   provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
   return await signInWithPopup(auth, provider);
 };
 
 export const logOut = async () => await signOut(auth);
 
-export const useUser = () => sharedState("user", userState, {});
-
-const userState = () => {
-  const user = stateClosure<App.User>({ uid: null });
-
-  const unsub = onIdTokenChanged(auth, (_user: User | null) => {
-    if (!_user) {
-      user.value = { uid: null };
-    } else {
-      user.value = {
-        uid: _user.uid,
-        fullName: _user.displayName,
-        profilePhotoURL: _user.photoURL,
-      };
-    }
+function createUserStore() {
+  return readable<User | null | undefined>(undefined, (set) => {
+    return onAuthStateChanged(auth, (user) => {
+      set(user);
+    });
   });
-  onDestroy(unsub);
+}
 
-  return user;
-};
-
-// export async function isOwner(
-//   eventId: string,
-//   groupId: string,
-//   userId: string
-// ) {
-//   const d = await getDoc(doc(firestore, `groups/${groupId}/events/${eventId}`));
-//   return d.get("createdBy") == userId;
-// }
+export const user = createUserStore();

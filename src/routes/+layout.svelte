@@ -1,14 +1,24 @@
 <script lang="ts">
-  let { children } = $props();
+  import type { LayoutProps } from "./$types";
+
+  import { pwaInfo } from "virtual:pwa-info";
+
+  import { toast } from "../lib/components/Toast.svelte";
+  import { user, loginWithGoogle, logOut } from "$lib/user.svelte";
 
   import "../app.css";
 
-  import { toast } from "../lib/components/Toast.svelte";
-  import { loginWithGoogle, logOut, useUser } from "$lib/user.svelte";
+  let { children }: LayoutProps = $props();
 
-  const userState = useUser();
-  const user = $derived(userState.value);
+  const webManifest = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : "");
 </script>
+
+<svelte:head>
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+  {@html webManifest}
+  
+  <title>Activity Organizer</title>
+</svelte:head>
 
 <nav
   class="m-4 p-2 flex justify-between items-stretch bg-gray-100 border-2 border-gray-300 rounded-md"
@@ -17,14 +27,16 @@
     <li><a href="/" class="hover:underline">Home</a></li>
   </ul>
   <div>
-    {#if user.uid != null}
+    {#if $user === undefined}
+      <p>Loading...</p>
+    {:else if $user}
       <div class="flex items-center">
         <details class="relative inline-block">
           <summary
             class="cursor-pointer hover:underline"
             style="list-style:none"
           >
-            <p>Hi, {user.fullName}</p>
+            <p>Hi, {$user.displayName || $user.email}</p>
           </summary>
           <div
             class="absolute mt-1 right-0 z-10 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1"
@@ -49,8 +61,8 @@
   </div>
 </nav>
 
-<div class="mx-4">
-  {#if user.uid}
+<main class="mx-4">
+  {#if $user}
     {@render children()}
   {:else}
     <div class="text-center mt-20">
@@ -59,7 +71,11 @@
       <h3 class="text-xl mt-12">Please login.</h3>
     </div>
   {/if}
-</div>
+</main>
+
+{#await import("$lib/components/ReloadPrompt.svelte") then { default: ReloadPrompt }}
+  <ReloadPrompt />
+{/await}
 
 {#if toast.active}
   <div

@@ -4,6 +4,6 @@ export const ssr = false;
 
 export const load: PageLoad = async ({ params }) => {
   return {
-    ...params
+    ...params,
   };
 };

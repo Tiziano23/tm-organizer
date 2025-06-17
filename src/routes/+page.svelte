@@ -29,9 +29,9 @@
   <a href={`/groups/new`} class="btn btn-primary">New group</a>
 </div>
 
-<ul class="p-1">
+<ul class="p-1 flex flex-col gap-2">
   {#each groups as group}
-    <li class="bg-slate-50 flex flex-col content-stretch">
+    <li class="bg-slate-50 flex flex-col content-stretch rounded-md">
       <a href="groups/{group.id}" class="p-3 flex justify-between group">
         <p class="group-hover:underline">{group.name}</p>
         <p>

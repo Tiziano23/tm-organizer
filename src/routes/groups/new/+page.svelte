@@ -9,7 +9,9 @@
   let name = $state("");
   let errorMessage = $state("");
 
-  async function createGroup() {
+  async function createGroup(event: Event) {
+    event.preventDefault();
+
     if (!$user) return;
 
     try {
@@ -19,14 +21,16 @@
       });
     } catch (error) {
       console.log(error);
-      errorMessage = "Failed to create event. Please try again.";
+      errorMessage = "Failed to create group. Please try again.";
     }
+
+    goto("../")
   }
 </script>
 
 <h1 class="text-2xl font-bold mb-6">Create New group</h1>
 
-<form onsubmit={createGroup} class="space-y-4">
+<form onsubmit={createGroup}>
   <div class="input-group">
     <label for="name">Group name</label>
     <input type="text" id="name" bind:value={name} />

@@ -6,6 +6,7 @@
 
   import { firestore } from "$lib/firebase";
   import ActivityComponent from "$lib/components/ActivityComponent.svelte";
+  import { goto } from "$app/navigation";
 
   const { data }: PageProps = $props();
 
@@ -20,7 +21,7 @@
       if (snap.exists()) {
         activityData = { id: snap.id, groupId: data.groupId, ...snap.data() };
       } else {
-        // TODO: Redirect
+        goto(`/groups/${data.groupId}`);
       }
     });
     return unsubscribe;

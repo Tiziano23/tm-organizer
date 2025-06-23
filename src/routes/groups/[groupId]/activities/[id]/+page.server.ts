@@ -1,6 +1,7 @@
 import type { EntryGenerator } from "./$types";
 import { firestoreAdmin } from "$lib/firebaseAdmin";
 
+// Generate URLs for ssr prerendering
 export const entries: EntryGenerator = async () => {
   const groupsSnapshot = await firestoreAdmin.collection("groups").get();
 

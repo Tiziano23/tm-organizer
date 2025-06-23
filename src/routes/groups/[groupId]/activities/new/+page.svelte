@@ -4,7 +4,6 @@
 
   import { firestore } from "$lib/firebase";
   import { addDoc, Bytes, collection, Timestamp } from "firebase/firestore";
-  import { redirect } from "@sveltejs/kit";
 
   const { data } = $props();
 
@@ -51,8 +50,8 @@
         images: imageData,
         subscribers: [],
       });
-      goto("../");
 
+      goto("../");
     } catch (error) {
       console.error(error);
       errorMessage = "Failed to create event. Please try again.";

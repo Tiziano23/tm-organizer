@@ -1,9 +1,7 @@
 # Organizer App
-
 This is a sample web application to organize group activities. It has been realized with SvelteKit v2 + Svelte v5.
 
 The data is stored in a NoSQL Firestore DB.
-
 
 # Running the sample
 First things first, you'll have to create a Firebase Account and provision a new firebase project with a web app (see guide at [firebase.google.com](https://firebase.google.com/docs/projects/learn-more))

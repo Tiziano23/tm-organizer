@@ -6,6 +6,20 @@ The data is stored in a NoSQL Firestore DB.
 # Running the sample
 First things first, you'll have to create a Firebase Account and provision a new firebase project with a web app (see guide at [firebase.google.com](https://firebase.google.com/docs/projects/learn-more))
 
+You should also set up a firestore database and update the access rules with the following
+
+```
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {    
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+```
+
 Once you have done that, you should provision an admin account by following this guide: [Set up a Firebase project and service account](https://firebase.google.com/docs/admin/setup#set-up-project-and-service-account)
 
 Place the `.json` in the root of the project.

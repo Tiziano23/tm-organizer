@@ -12,7 +12,9 @@ export default defineConfig({
     SvelteKitPWA({
       base: "/",
       scope: "/",
-      srcDir: "./src",
+      srcDir: "src",
+      // filename: "service-worker.ts",
+      // strategies: "injectManifest",
       manifest: {
         name: "Activity Organizer",
         short_name: "Activities",

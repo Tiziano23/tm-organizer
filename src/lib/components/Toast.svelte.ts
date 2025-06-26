@@ -10,7 +10,17 @@ export const toast = $state({
 
 export function toastNotification(text: string, duration?: number) {
   toast.text = text;
-  
+
+  Notification.requestPermission().then((outcome) => {
+    if (outcome == "granted") {
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.showNotification(text, {
+          body: text,
+        });
+      });
+    }
+  });
+
   if (toast.active) {
     if (activationTimeout) clearTimeout(activationTimeout);
     if (visibilityTimeout) clearTimeout(visibilityTimeout);
